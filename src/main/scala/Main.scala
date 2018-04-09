@@ -3,10 +3,10 @@ import monix.eval.Task
 import monix.execution.Scheduler.Implicits.global
 import org.http4s.server.Server
 import org.http4s.server.blaze.BlazeBuilder
-import service.Service
+import service.HelloWorld
 object Main extends StreamApp[Task] {
 
-  val service = new Service()
+  val service = new HelloWorld()
 
   def server(args: List[String]): fs2.Stream[Task, StreamApp.ExitCode] = {
     BlazeBuilder[Task]
