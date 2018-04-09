@@ -1,11 +1,9 @@
 package contract
 
-import io.circe.generic.JsonCodec
 import io.circe.generic.semiauto._
 import io.circe.{Decoder, Encoder}
 
 // for practice with Circe
-@JsonCodec
 sealed trait Recipe extends Product with Serializable {
   val name: String
   val ingredients: List[String]
@@ -28,6 +26,12 @@ object Recipe {
   implicit val lunchDecoder: Decoder[Lunch] = deriveDecoder[Lunch]
   implicit val breakfastDecoder: Decoder[Breakfast] = deriveDecoder[Breakfast]
 
-  implicit val recipeEncoder: Encoder[Recipe] = ???
+  implicit val recipeEncoder: Encoder[Recipe] = Encoder.instance{
+    case f : Feast => feastEncoder.apply(f)
+    case d : Dinner => dinnerEncoder.apply(d)
+    case l : Lunch => lunchEncoder.apply(l)
+    case b : Breakfast => breakfastEncoder.apply(b)
+    case _ => ???
+  }
   implicit val recipeDecoder: Decoder[Recipe] = ???
 }
